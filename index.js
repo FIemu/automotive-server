@@ -7,6 +7,21 @@ require('dotenv').config()
 app.use(cors())
 app.use(express.json())
 
+app.use(cors({
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'https://automotive-auth-a7469.web.app',
+      'http://localhost:5173'
+    ];
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+
+
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.5u2j5fm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
